@@ -166,10 +166,10 @@ def main():
 
     selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
 
-    st.subheader("Donorsbox Reply Tool")
+    st.title("Donorsbox Reply Tool")
     
-    st.write("paste the email here for which you would like ChatGPT to generate a response.")
-    st.write("**Remove all personal information from the email.**")
+    st.write("Paste the email here for which you want ChatGPT to generate a response.")
+    st.write("**Remove all GDPR sensitive information.**")
     e_mail = st.text_area('Paste email', height=150)
 
     result_1 = extract_and_translate_email(e_mail, selected_model)
