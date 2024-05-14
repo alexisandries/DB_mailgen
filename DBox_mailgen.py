@@ -181,7 +181,7 @@ def main():
         st.write(result_1['Email_action_points'])
         
     col1, col2 = st.columns(2)
-    st.markdown(----)
+    st.markdown('---')
     with col1: 
         st.write("Paste here the action points you have or will have completed by the time you will answer the mail.")
         action_points = st.text_area('Mention action points', height=150)
