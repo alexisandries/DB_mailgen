@@ -159,7 +159,7 @@ def main():
         st.write("Paste additional information you want to see mentionned in the answer, and which is not an action point.")
         extra_info = st.text_area('Add extra info', height=150)
 
-    result = reply_to_email(e_mail, action_points, extra_info, select_model)
+    result = reply_to_email(e_mail, action_points, extra_info, selected_model)
 
     if st.button("Click here to translate the original email"):
         st.write(result['Email_translation'])
