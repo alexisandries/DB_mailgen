@@ -121,7 +121,7 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     '''
     Consider also the following info between backticks and use it if relevant:
     '''
-    info = {extra_info}
+    {extra_info}
     '''
     Your answer should always be engaging, constructive, helpful and respectful. Consider not only the content but also the tone and sentiment of the donor message to determine the most suitable answer. 
     Avoid any kind of controversy, ambiguities, or politically oriented answers.
@@ -138,11 +138,12 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     )
     
     template_translate_answer = """
-    Translate the email answer to French if {Email_language} is Dutch and to Dutch if {Email_language} is French :
+    Translate the email answer between tripple backticks a)into French if {Email_language} is Dutch or b) into Dutch if {Email_language} is French :
+    If {Email_language} is neither French nor Dutch, translate it to c) both French and Dutch.
+    
     '''
-    email answer = {Email_answer}
+    {Email_answer}
     '''
-    If {Email_language} is neither French nor Dutch, translate it to both French and Dutch.
     Render only the translation.
     """
     
@@ -192,9 +193,9 @@ def main():
     result_1 = extract_and_translate_email(e_mail, selected_model)
 
     if st.button("Click here to translate the original email and extract action points"):
-        st.write("*Translation*")
+        st.write("**Translation**")
         st.write(result_1['Email_translation'])
-        st.write("*Action points*")
+        st.write("**Action points**")
         st.write(result_1['Email_action_points'])
         
     col1, col2 = st.columns(2)
@@ -207,9 +208,9 @@ def main():
 
     result_2 = reply_to_email(e_mail, action_points, extra_info, selected_model)
     if st.button("Click here to generate draft answer"):
-        st.write('*Proposed answer to the mail*')
+        st.write('**Proposed answer to the mail**')
         st.write(result_2['Email_answer'])
-        st.write('*Translation of answer*')
+        st.write('**Translation of answer**')
         st.write(result_2['Email_answer_translation'])
 
 
