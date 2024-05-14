@@ -144,9 +144,9 @@ def main():
         st.error('The password you entered is incorrect.')
         st.stop()
 
-    selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4-turbo', 'gpt-4o'])
+    selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
 
-    st.title("Donorsbox Reply Tool")
+    st.subheader("Donorsbox Reply Tool")
     
     st.write("paste the email here for which you would like ChatGPT to generate a response.")
     st.write("**Please remove all personal information from the email.**")
