@@ -14,7 +14,7 @@ extra_info = ""
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-def extract_and_translate_email(email, llm_model):
+def extract_and_translate_email(e_mail, llm_model):
 
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
     
@@ -88,7 +88,7 @@ def extract_and_translate_email(email, llm_model):
 
     return result
 
-def reply_to_email(email, done_action_points, extra_info, llm_model):
+def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
 
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
     
