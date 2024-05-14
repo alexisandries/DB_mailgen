@@ -157,7 +157,7 @@ def main():
     PASSWORD = st.secrets["MDM_PASSWORD"]
     client = OpenAI()
     
-    pass_word = st.sidebar.text_input('Enter the password:')
+    pass_word = st.sidebar.text_input('**Enter the password:**')
     if not pass_word:
         st.stop()
     if pass_word != PASSWORD:
@@ -187,7 +187,7 @@ def main():
         st.write("List the action points you have completed or will complete by the time you reply to the email.")
         action_points = st.text_area('Mention action points', height=150)
     with col2: 
-        st.write("Include any information to be mentioned in the answer that isn't an action point.")
+        st.write("Include any information (not) to be mentioned in the answer that isn't an action point.")
         extra_info = st.text_area('Add extra info', height=150)
 
     result_2 = reply_to_email(e_mail, action_points, extra_info, selected_model)
