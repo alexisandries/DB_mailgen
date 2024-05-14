@@ -16,7 +16,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def extract_and_translate_email(e_mail, llm_model):
 
-    llm = ChatOpenAI(temperature=0.7, model=llm_model)
+    llm = ChatOpenAI(temperature=0.5, model=llm_model)
     
     # template_language_detection = """
     # Detect the language in which the email between triple backticks is written:
@@ -184,7 +184,7 @@ def main():
     col1, col2 = st.columns(2)
     
     with col1: 
-        st.write("Add here the action points you have or will have completed by the time you will answer the mail.")
+        st.write("List the action points you have completed or will complete by the time you reply to the email.")
         action_points = st.text_area('Mention action points', height=150)
     with col2: 
         st.write("Include any information to be mentioned in the answer that isn't an action point.")
