@@ -167,7 +167,7 @@ def main():
         st.write('*Proposed answer to the mail*')
         st.write(result['Email_answer'])
         st.write('*Translation of answer*')
-        st.write(result['Email_answer_translation']
+        st.write(result['Email_answer_translation'])
 
 
 if __name__ == "__main__":
