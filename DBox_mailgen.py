@@ -109,7 +109,7 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     '''
     Your answer should always be engaging, constructive, helpful and respectful. Consider not only the content but also the tone and sentiment of the donor message to determine the most suitable answer. 
     Avoid any kind of controversy, ambiguities, or politically oriented answers.
-    If appropriate, while avoiding being too pushy or inpolite, mention the possibility to become a (regular) donor (again) by surfing to our website www.medecinsdumonde.be or www.doktersvandewereld.be (according to {Email_language}). 
+    If appropriate, while avoiding being too pushy or inpolite, mention the possibility to become a (regular) donor (again) by surfing to our website www.medecinsdumonde.be or www.doktersvandewereld.be (for respectively French or Dutch answers). 
     Try to end by a positive note and/or a thank you.
     """
     
