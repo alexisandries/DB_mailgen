@@ -79,7 +79,7 @@ def reply_to_email(email, done_action_points, extra_info, llm_model):
     '''
     email = {e_mail}
     '''
-    Consider the {Email_action_points} and mention if needed that the following action points between triple backticks have been taken care of:
+    Consider the {Email_action_points} and mention, if needed, that the following action points between triple backticks have been taken care of:
     '''
     checked action points = {done_action_points}
     '''
@@ -148,22 +148,25 @@ def main():
 
     st.title("Donorsbox Reply Tool")
     
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.write("Paste here the email you want ChatGPT provide you with an answer. Don't forget to fill in the other text boxes also.")
-        st.write("**Please remove all personal information from the email.**")
-        e_mail = st.text_area('Paste email', height=150)
-    with col2: 
-        st.write("Paste here the action points you have or will have completed by the time you will answer the mail.")
-        action_points = st.text_area('Mention action points', height=150)
-    with col3: 
-        st.write("Paste additional information you want to see mentionned in the answer, and which is not an action point.")
-        extra_info = st.text_area('Add extra info', height=150)
+    st.write("paste the email here for which you would like ChatGPT to generate a response.")
+    st.write("**Please remove all personal information from the email.**")
+    e_mail = st.text_area('Paste email', height=150)
 
     result = reply_to_email(e_mail, action_points, extra_info, selected_model)
 
-    if st.button("Click here to translate the original email"):
+    if st.button("Click here to translate the original email and extract action points"):
+        st.write("*Translation*")
         st.write(result['Email_translation'])
+        st.write("*Action points*")
+        st.write(result['Email_action_points'])
+        
+        col1, col2 = st.columns(2)
+        with col1: 
+            st.write("Paste here the action points you have or will have completed by the time you will answer the mail.")
+            action_points = st.text_area('Mention action points', height=150)
+        with col2: 
+            st.write("Paste additional information you want to see mentionned in the answer, and which is not an action point.")
+            extra_info = st.text_area('Add extra info', height=150)
 
     if st.button("Click here to generate draft answer"):
         st.write('*Proposed answer to the mail*')
