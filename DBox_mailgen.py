@@ -8,6 +8,10 @@ from langchain.chains import LLMChain
 
 st.set_page_config(layout="wide")
 
+e_mail = ""
+action_points = ""
+extra_info = ""
+
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def reply_to_email(email, done_action_points, extra_info, llm_model):
@@ -143,9 +147,6 @@ def main():
     selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4-turbo', 'gpt-4o'])
 
     st.title("Donorsbox Reply Tool")
-    e_mail = ""
-    action_points = ""
-    extra_info = ""
     
     col1, col2, col3 = st.columns(3)
     with col1:
