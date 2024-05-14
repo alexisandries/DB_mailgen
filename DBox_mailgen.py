@@ -16,7 +16,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def extract_and_translate_email(e_mail, llm_model):
 
-    llm = ChatOpenAI(temperature=0.7, model=llm_model)
+    llm = ChatOpenAI(temperature=0.3, model=llm_model)
     
     # template_language_detection = """
     # Detect the language in which the email between triple backticks is written:
