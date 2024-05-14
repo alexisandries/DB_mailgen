@@ -1,3 +1,4 @@
+import streamlit
 import openai
 from openai import OpenAI
 from langchain_openai import ChatOpenAI
