@@ -179,18 +179,19 @@ def main():
         st.write(result_1['Email_translation'])
         st.write("**Action points**")
         st.write(result_1['Email_action_points'])
-        
+        st.markdown('---')
+    
     col1, col2 = st.columns(2)
-    st.markdown('---')
+    
     with col1: 
-        st.write("Paste here the action points you have or will have completed by the time you will answer the mail.")
+        st.write("Add here the action points you have or will have completed by the time you will answer the mail.")
         action_points = st.text_area('Mention action points', height=150)
     with col2: 
-        st.write("Paste additional information you want to see mentionned in the answer, and which is not an action point.")
+        st.write("Include any information to be mentioned in the answer that isn't an action point.")
         extra_info = st.text_area('Add extra info', height=150)
 
     result_2 = reply_to_email(e_mail, action_points, extra_info, selected_model)
-    if st.button("Click here to generate draft answer"):
+    if st.button("Click here to generate an answer"):
         st.write('**Proposed answer to the mail**')
         st.write(result_2['Email_answer'])
         st.write('**Translation of answer**')
