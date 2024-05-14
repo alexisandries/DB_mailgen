@@ -93,25 +93,9 @@ def extract_and_translate_email(e_mail, llm_model):
 def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
 
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
-    
-    template_language_detection = """
-    Detect the language in which the email between triple backticks is written:
-    '''
-    {e_mail}
-    '''
-    Render only the language, for example 'French', 'Dutch', ...
-    """
-    
-    prompt_language_detection = ChatPromptTemplate.from_template(template_language_detection)
-    
-    chain_language_detection = LLMChain(
-        llm=llm, 
-        prompt=prompt_language_detection, 
-        output_key="Email_language"
-    )
-           
+            
     template_propose_answer = """
-    Your task is to propose an answer in {Email_language} to the email between triple backticks:
+    Your task is to propose an answer to the email between triple backticks, in the same language:
     '''
     {e_mail}
     '''
@@ -138,13 +122,13 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     )
     
     template_translate_answer = """
-    Translate the email answer between tripple backticks a)into French if {Email_language} is Dutch or b) into Dutch if {Email_language} is French :
-    If {Email_language} is neither French nor Dutch, translate it to c) both French and Dutch.
+    Translate the email answer between tripple backticks a)into French if the email answer is in Dutch or b) into Dutch if the email answer is in French :
+    If the email answer is nor in French nor in Dutch, translate it to c) both French and Dutch.
     
     '''
     {Email_answer}
     '''
-    Render only the translation.
+    Render only the translation, without any comment or introduction.
     """
     
     prompt_translate_answer = ChatPromptTemplate.from_template(template_translate_answer)
@@ -156,9 +140,9 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     )
     
     overall_chain = SequentialChain(
-        chains=[chain_language_detection, chain_propose_answer, chain_translate_answer],
+        chains=[chain_propose_answer, chain_translate_answer],
         input_variables=['e_mail', 'done_action_points', 'extra_info'],
-        output_variables=["Email_language", "Email_answer", "Email_answer_translation"],
+        output_variables=["Email_answer", "Email_answer_translation"],
         verbose=False
     )
     
