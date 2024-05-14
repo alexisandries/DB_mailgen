@@ -21,8 +21,9 @@ def extract_and_translate_email(e_mail, llm_model):
     template_language_detection = """
     Detect the language in which the email between triple backticks is written:
     '''
-    email = {e_mail}
+    {e_mail}
     '''
+    Render only the language, for example 'French', 'Dutch', ...
     """
     
     prompt_language_detection = ChatPromptTemplate.from_template(template_language_detection)
@@ -37,8 +38,9 @@ def extract_and_translate_email(e_mail, llm_model):
     Translate the email between backticks to French if {Email_language} is Dutch and to Dutch if {Email_language} is French.
     If {Email_language} is neither French nor Dutch, translate it to French and Dutch.
     '''
-    email = {e_mail}
+    {e_mail}
     '''
+    Render only the translation.
     """
     
     prompt_translate_email = ChatPromptTemplate.from_template(template_translate_email)
@@ -50,9 +52,9 @@ def extract_and_translate_email(e_mail, llm_model):
     )
     
     template_extract_action_points = """
-    Look at the email between triple backticks and extract all action points from it: 
+    Look at the email between triple backticks and extract every possible action point from it: 
     '''
-    email = {e_mail}
+    {e_mail}
     '''
     Consider that the mail is sent by a donor to an NGO. The action points to be listed are only those for the NGO to take care of. 
     List the action points and add a translation in French if {Email_language} is Dutch and in Dutch if {Email_language} is French. 
@@ -95,8 +97,9 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     template_language_detection = """
     Detect the language in which the email between triple backticks is written:
     '''
-    email = {e_mail}
+    {e_mail}
     '''
+    Render only the language, for example 'French', 'Dutch', ...
     """
     
     prompt_language_detection = ChatPromptTemplate.from_template(template_language_detection)
@@ -106,42 +109,17 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
         prompt=prompt_language_detection, 
         output_key="Email_language"
     )
-       
-    template_extract_action_points = """
-    Look at the email between triple backticks and extract all action points from it: 
-    '''
-    email = {e_mail}
-    '''
-    Consider that the mail is sent by a donor to an NGO. The action points to be listed are only those for the NGO to take care of. 
-    List the action points and add a translation in French if {Email_language} is Dutch and in Dutch if {Email_language} is French. 
-    
-    The list should have the format as in the following example between triple backticks:
-    
-    Example:
-    '''
-    1. Mettre fin au mandat dans les 24 heures / het mandaat stopzetten binnen de 24 uur
-    2. Confirmer par mail quand c'est fait / Per mail bevestigen wanneer het is stopgezet
-    '''
-    """
-    
-    prompt_extract_action_points = ChatPromptTemplate.from_template(template_extract_action_points)
-    
-    chain_extract_action_points = LLMChain(
-        llm=llm, 
-        prompt=prompt_extract_action_points, 
-        output_key="Email_action_points"
-    )
-    
+           
     template_propose_answer = """
     Your task is to propose an answer in {Email_language} to the email between triple backticks:
     '''
-    email = {e_mail}
+    {e_mail}
     '''
-    Consider the {Email_action_points} and mention, if needed, that the following action points between triple backticks have been taken care of:
+    If appropriate, mention that the action points between triple backticks have been taken care of:
     '''
-    checked action points = {done_action_points}
+    {done_action_points}
     '''
-    Consider also the following info between backticks:
+    Consider also the following info between backticks and use it if relevant:
     '''
     info = {extra_info}
     '''
@@ -165,6 +143,7 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     email answer = {Email_answer}
     '''
     If {Email_language} is neither French nor Dutch, translate it to both French and Dutch.
+    Render only the translation.
     """
     
     prompt_translate_answer = ChatPromptTemplate.from_template(template_translate_answer)
@@ -176,9 +155,9 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     )
     
     overall_chain = SequentialChain(
-        chains=[chain_language_detection, chain_extract_action_points, chain_propose_answer, chain_translate_answer],
+        chains=[chain_language_detection, chain_propose_answer, chain_translate_answer],
         input_variables=['e_mail', 'done_action_points', 'extra_info'],
-        output_variables=["Email_language", "Email_action_points", "Email_answer", "Email_answer_translation"],
+        output_variables=["Email_language", "Email_answer", "Email_answer_translation"],
         verbose=False
     )
     
