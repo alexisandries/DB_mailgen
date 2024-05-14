@@ -18,29 +18,29 @@ def extract_and_translate_email(e_mail, llm_model):
 
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
     
-    template_language_detection = """
-    Detect the language in which the email between triple backticks is written:
-    '''
-    {e_mail}
-    '''
-    Render only the language, for example 'French', 'Dutch', ...
-    """
+    # template_language_detection = """
+    # Detect the language in which the email between triple backticks is written:
+    # '''
+    # {e_mail}
+    # '''
+    # Render only the language, for example 'French', 'Dutch', ...
+    # """
     
-    prompt_language_detection = ChatPromptTemplate.from_template(template_language_detection)
+    # prompt_language_detection = ChatPromptTemplate.from_template(template_language_detection)
     
-    chain_language_detection = LLMChain(
-        llm=llm, 
-        prompt=prompt_language_detection, 
-        output_key="Email_language"
-    )
+    # chain_language_detection = LLMChain(
+    #     llm=llm, 
+    #     prompt=prompt_language_detection, 
+    #     output_key="Email_language"
+    # )
     
     template_translate_email = """
-    Translate the email between backticks to French if {Email_language} is Dutch and to Dutch if {Email_language} is French.
-    If {Email_language} is neither French nor Dutch, translate it to French and Dutch.
+    Translate the email between backticks a) to French if it is written in Dutch and b) to Dutch if it is written in French.
+    If it is written in any other language, translate it c) to both French and Dutch.
     '''
     {e_mail}
     '''
-    Render only the translation.
+    Render only the translation(s), without any introduction or comment.
     """
     
     prompt_translate_email = ChatPromptTemplate.from_template(template_translate_email)
@@ -59,13 +59,11 @@ def extract_and_translate_email(e_mail, llm_model):
     Consider that the mail is sent by a donor to an NGO. The action points to be listed are only those for the NGO to take care of. 
     List the action points and add a translation in French if {Email_language} is Dutch and in Dutch if {Email_language} is French. 
     
-    The list should have the format as in the following example between triple backticks:
+    The list should have the format as in the following example:
     
     Example:
-    '''
     1. Mettre fin au mandat dans les 24 heures / het mandaat stopzetten binnen de 24 uur
     2. Confirmer par mail quand c'est fait / Per mail bevestigen wanneer het is stopgezet
-    '''
     """
     
     prompt_extract_action_points = ChatPromptTemplate.from_template(template_extract_action_points)
@@ -77,9 +75,9 @@ def extract_and_translate_email(e_mail, llm_model):
     )
       
     overall_chain = SequentialChain(
-        chains=[chain_language_detection, chain_translate_email, chain_extract_action_points],
+        chains=[chain_translate_email, chain_extract_action_points],
         input_variables=['e_mail'],
-        output_variables=["Email_language", "Email_translation", "Email_action_points"],
+        output_variables=["Email_translation", "Email_action_points"],
         verbose=False
     )
     
