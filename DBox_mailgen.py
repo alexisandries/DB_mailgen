@@ -14,7 +14,7 @@ extra_info = ""
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-def reply_to_email(email, done_action_points, extra_info, llm_model):
+def extract_and_translate_email(email, llm_model):
 
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
     
@@ -49,6 +49,64 @@ def reply_to_email(email, done_action_points, extra_info, llm_model):
         output_key="Email_translation"
     )
     
+    template_extract_action_points = """
+    Look at the email between triple backticks and extract all action points from it: 
+    '''
+    email = {e_mail}
+    '''
+    Consider that the mail is sent by a donor to an NGO. The action points to be listed are only those for the NGO to take care of. 
+    List the action points and add a translation in French if {Email_language} is Dutch and in Dutch if {Email_language} is French. 
+    
+    The list should have the format as in the following example between triple backticks:
+    
+    Example:
+    '''
+    1. Mettre fin au mandat dans les 24 heures / het mandaat stopzetten binnen de 24 uur
+    2. Confirmer par mail quand c'est fait / Per mail bevestigen wanneer het is stopgezet
+    '''
+    """
+    
+    prompt_extract_action_points = ChatPromptTemplate.from_template(template_extract_action_points)
+    
+    chain_extract_action_points = LLMChain(
+        llm=llm, 
+        prompt=prompt_extract_action_points, 
+        output_key="Email_action_points"
+    )
+      
+    overall_chain = SequentialChain(
+        chains=[chain_language_detection, chain_translate_email, chain_extract_action_points],
+        input_variables=['e_mail'],
+        output_variables=["Email_language", "Email_translation", "Email_action_points"],
+        verbose=False
+    )
+    
+    # Invoke the overall chain
+    result = overall_chain({
+        'e_mail': e_mail
+    })
+
+    return result
+
+def reply_to_email(email, done_action_points, extra_info, llm_model):
+
+    llm = ChatOpenAI(temperature=0.1, model=llm_model)
+    
+    template_language_detection = """
+    Detect the language in which the email between triple backticks is written:
+    '''
+    email = {e_mail}
+    '''
+    """
+    
+    prompt_language_detection = ChatPromptTemplate.from_template(template_language_detection)
+    
+    chain_language_detection = LLMChain(
+        llm=llm, 
+        prompt=prompt_language_detection, 
+        output_key="Email_language"
+    )
+       
     template_extract_action_points = """
     Look at the email between triple backticks and extract all action points from it: 
     '''
@@ -118,9 +176,9 @@ def reply_to_email(email, done_action_points, extra_info, llm_model):
     )
     
     overall_chain = SequentialChain(
-        chains=[chain_language_detection, chain_translate_email, chain_extract_action_points, chain_propose_answer, chain_translate_answer],
+        chains=[chain_language_detection, chain_extract_action_points, chain_propose_answer, chain_translate_answer],
         input_variables=['e_mail', 'done_action_points', 'extra_info'],
-        output_variables=["Email_language", "Email_translation", "Email_action_points", "Email_answer", "Email_answer_translation"],
+        output_variables=["Email_language", "Email_action_points", "Email_answer", "Email_answer_translation"],
         verbose=False
     )
     
@@ -152,7 +210,7 @@ def main():
     st.write("**Remove all personal information from the email.**")
     e_mail = st.text_area('Paste email', height=150)
 
-    result_1 = reply_to_email(e_mail, action_points, extra_info, selected_model)
+    result_1 = extract_and_translate_email(e_mail, selected_model)
 
     if st.button("Click here to translate the original email and extract action points"):
         st.write("*Translation*")
