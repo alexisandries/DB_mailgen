@@ -57,11 +57,11 @@ def extract_and_translate_email(e_mail, llm_model):
     {e_mail}
     '''
     Consider that the mail is sent by a donor to an NGO. The action points to be listed are only those for the NGO to take care of. 
-    List the action points and add a translation in French if {Email_language} is Dutch and in Dutch if {Email_language} is French. 
+    List the action points in both Dutch and French. 
     
-    The list should have the format as in the following example:
+    The list should have the format as follows:
     
-    Example:
+    Format example:
     1. Mettre fin au mandat dans les 24 heures / het mandaat stopzetten binnen de 24 uur
     2. Confirmer par mail quand c'est fait / Per mail bevestigen wanneer het is stopgezet
     """
