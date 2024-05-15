@@ -156,9 +156,7 @@ def main():
         st.stop()
 
     selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
-
-    name_input = st.sidebar.text_area('Enter your full name', height=10)
-    
+  
     st.title("Donorsbox Reply Tool")
     
     st.write("Paste the email here for which you want ChatGPT to generate a response.")
@@ -174,8 +172,8 @@ def main():
         st.write(result_1['Email_action_points'])
         st.markdown('---')
     
+    name_input = st.text_area('Enter your full name', height=10)
     col1, col2 = st.columns(2)
-    
     with col1: 
         st.write("List the action points you have completed or will complete by the time you reply to the email.")
         action_points = st.text_area('Mention action points', height=150)
