@@ -73,32 +73,35 @@ def extract_and_translate_email(e_mail, llm_model):
 
     return result
 
-def reply_to_email(e_mail, name, done_action_points, extra_info, llm_model):
+def reply_to_email(e_mail, name, done_action_points, extra_info, temperature, llm_model):
 
-    llm = ChatOpenAI(temperature=0.1, model=llm_model)
+    llm = ChatOpenAI(temperature=temperature, model=llm_model)
             
     template_propose_answer = """
-    Your task is to propose an answer to the email between triple backticks, in the same language:
-    '''
+    Your task is to draft a response to the email enclosed within triple backticks, in the same language:
+    ```
     {e_mail}
-    '''
-    If appropriate, mention that the action points between triple backticks have been taken care of:
-    '''
+    ```
+    Mention that the following action points have been addressed if appropriate:
+    ```
     {done_action_points}
-    '''
-    Consider also the following info between backticks and use it if relevant:
-    '''
+    ```
+    Consider the additional information below and use it if adequate:
+    ```
     {extra_info}
-    '''
-    Your answer should always be engaging, constructive, helpful and respectful. Consider not only the content but also the tone and sentiment of the donors message to determine the most suitable answer. 
-    Avoid any kind of controversy, ambiguities, or politically oriented answers.
-    If appropriate, while avoiding being too pushy or inpolite, mention the possibility to become a (regular) donor (again) by surfing to our website www.medecinsdumonde.be or www.doktersvandewereld.be (for respectively French or Dutch answers). 
-    Try to end by a positive note and/or a thank you.
+    ```
+    Your response should be engaging, constructive, helpful, and respectful. Reflect on the tone and sentiment of the sender's message to determine the most suitable reply. Avoid controversy, ambiguity, or politically oriented responses.
 
-    Terminate the mail with proper salutations, name and organisation:
+    If the sender requested to stop or cancel a regular donation, politely mention the option to become a regular donor again by visiting our website:
+    - French: www.medecinsdumonde.be
+    - Dutch: www.doktersvandewereld.be
+
+    Conclude with a positive note and/or a thank you. Sign off with the appropriate salutations, your name, and the organization:
+    - French response: Médecins du Monde
+    - Dutch response: Dokters van de Wereld
+
+    Regards,
     {name}
-    Médecins du Monde (if the answer is in French)
-    Dokters van de Wereld (if the answer is in Dutch)
     """
     
     prompt_propose_answer = ChatPromptTemplate.from_template(template_propose_answer)
@@ -156,33 +159,33 @@ def main():
         st.stop()
 
     selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
-  
+    set_temperature = st.sidebar.slider('**Select the TEMPERATURE**', min_value=0.1, max_value=0.3, step=0.1) 
+    
     st.title("Donorsbox Reply Tool")
     
     st.write("Paste the email here for which you want ChatGPT to generate a response.")
     st.write("**Remove all GDPR sensitive information.**")
     e_mail = st.text_area('Paste email', height=150)
 
-    result_1 = extract_and_translate_email(e_mail, selected_model)
-
     if st.button("Click here to translate the original email and extract action points"):
+        result_1 = extract_and_translate_email(e_mail, selected_model)
         st.write("**Translation**")
         st.write(result_1['Email_translation'])
         st.write("**Action points**")
         st.write(result_1['Email_action_points'])
         st.markdown('---')
     
-    name_input = st.sidebar. text_area('Enter your full name', height=0)
+    name_input = st.text_area('Enter your full name', height=5)
     col1, col2 = st.columns(2)
     with col1: 
         st.write("List the action points you have completed or will complete by the time you reply to the email.")
         action_points = st.text_area('Mention action points', height=150)
     with col2: 
-        st.write("If any, include additional information to be mentioned in the answer and specify any messages to be avoided.")
+        st.write("If any, include additional information to be mentioned in the answer and specify any message to be avoided.")
         extra_info = st.text_area('Add extra info', height=150)
 
-    result_2 = reply_to_email(e_mail, name_input, action_points, extra_info, selected_model)
     if st.button("Click here to generate an answer"):
+        result_2 = reply_to_email(e_mail, name_input, action_points, extra_info, set_temperature, selected_model)
         st.write('**Proposed answer to the mail**')
         st.write(result_2['Email_answer'])
         st.write('**Translation of answer**')
