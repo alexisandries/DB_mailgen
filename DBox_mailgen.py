@@ -17,23 +17,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def extract_and_translate_email(e_mail, llm_model):
 
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
-    
-    # template_language_detection = """
-    # Detect the language in which the email between triple backticks is written:
-    # '''
-    # {e_mail}
-    # '''
-    # Render only the language, for example 'French', 'Dutch', ...
-    # """
-    
-    # prompt_language_detection = ChatPromptTemplate.from_template(template_language_detection)
-    
-    # chain_language_detection = LLMChain(
-    #     llm=llm, 
-    #     prompt=prompt_language_detection, 
-    #     output_key="Email_language"
-    # )
-    
+      
     template_translate_email = """
     Translate the email between backticks a) to French if it is written in Dutch and b) to Dutch if it is written in French.
     If it is written in any other language, translate it c) to both French and Dutch.
