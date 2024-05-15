@@ -171,7 +171,7 @@ def main():
 
     selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
 
-    name = st.sidebar.text_area('Enter your full name', height=30)
+    name = st.sidebar.text_area('Enter your full name', height=10)
     
     st.title("Donorsbox Reply Tool")
     
