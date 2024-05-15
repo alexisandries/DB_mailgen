@@ -76,7 +76,7 @@ def extract_and_translate_email(e_mail, llm_model):
       
     overall_chain = SequentialChain(
         chains=[chain_translate_email, chain_extract_action_points],
-        input_variables=['e_mail'],
+        input_variables=['e_mail', 'Name'],
         output_variables=["Email_translation", "Email_action_points"],
         verbose=False
     )
@@ -88,7 +88,7 @@ def extract_and_translate_email(e_mail, llm_model):
 
     return result
 
-def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
+def reply_to_email(e_mail, name, done_action_points, extra_info, llm_model):
 
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
             
@@ -105,10 +105,15 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     '''
     {extra_info}
     '''
-    Your answer should always be engaging, constructive, helpful and respectful. Consider not only the content but also the tone and sentiment of the donor message to determine the most suitable answer. 
+    Your answer should always be engaging, constructive, helpful and respectful. Consider not only the content but also the tone and sentiment of the donors message to determine the most suitable answer. 
     Avoid any kind of controversy, ambiguities, or politically oriented answers.
     If appropriate, while avoiding being too pushy or inpolite, mention the possibility to become a (regular) donor (again) by surfing to our website www.medecinsdumonde.be or www.doktersvandewereld.be (for respectively French or Dutch answers). 
     Try to end by a positive note and/or a thank you.
+
+    Terminate the mail with proper salutations, name and organisation:
+    {name}
+    Médecins du Monde (if the answer is in French)
+    Dokters van de Wereld (if the answer is in Dutch)
     """
     
     prompt_propose_answer = ChatPromptTemplate.from_template(template_propose_answer)
@@ -120,7 +125,7 @@ def reply_to_email(e_mail, done_action_points, extra_info, llm_model):
     )
     
     template_translate_answer = """
-    Translate the email answer between tripple backticks a)into French if the email answer is in Dutch or b) into Dutch if the email answer is in French :
+    Translate the email answer between tripple backticks a)into French if the email answer is in Dutch or b) into Dutch if the email answer is in French.
     If the email answer is nor in French nor in Dutch, translate it to c) both French and Dutch.
     
     '''
@@ -166,6 +171,8 @@ def main():
 
     selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
 
+    name = st.sidebar.text_area('Enter your full name', height=30)
+    
     st.title("Donorsbox Reply Tool")
     
     st.write("Paste the email here for which you want ChatGPT to generate a response.")
@@ -187,7 +194,7 @@ def main():
         st.write("List the action points you have completed or will complete by the time you reply to the email.")
         action_points = st.text_area('Mention action points', height=150)
     with col2: 
-        st.write("Include any information (not) to be mentioned in the answer that isn't an action point.")
+        st.write("If any, include additional information to be mentioned in the answer and specify any messages to be avoided.")
         extra_info = st.text_area('Add extra info', height=150)
 
     result_2 = reply_to_email(e_mail, action_points, extra_info, selected_model)
