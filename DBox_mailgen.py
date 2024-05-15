@@ -172,7 +172,7 @@ def main():
         st.write(result_1['Email_action_points'])
         st.markdown('---')
     
-    name_input = st.text_area('Enter your full name', height=10)
+    name_input = st.sidebar. text_area('Enter your full name', height=0)
     col1, col2 = st.columns(2)
     with col1: 
         st.write("List the action points you have completed or will complete by the time you reply to the email.")
