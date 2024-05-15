@@ -61,7 +61,7 @@ def extract_and_translate_email(e_mail, llm_model):
       
     overall_chain = SequentialChain(
         chains=[chain_translate_email, chain_extract_action_points],
-        input_variables=['e_mail', 'Name'],
+        input_variables=['e_mail'],
         output_variables=["Email_translation", "Email_action_points"],
         verbose=False
     )
@@ -129,7 +129,7 @@ def reply_to_email(e_mail, name, done_action_points, extra_info, llm_model):
     
     overall_chain = SequentialChain(
         chains=[chain_propose_answer, chain_translate_answer],
-        input_variables=['e_mail', 'done_action_points', 'extra_info'],
+        input_variables=['e_mail', 'name', 'done_action_points', 'extra_info'],
         output_variables=["Email_answer", "Email_answer_translation"],
         verbose=False
     )
@@ -137,6 +137,7 @@ def reply_to_email(e_mail, name, done_action_points, extra_info, llm_model):
     # Invoke the overall chain
     result = overall_chain({
         'e_mail': e_mail,
+        'name': name,
         'done_action_points': done_action_points,
         'extra_info': extra_info
     })
