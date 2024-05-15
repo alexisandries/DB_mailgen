@@ -8,6 +8,7 @@ from langchain.chains import LLMChain
 
 st.set_page_config(layout="wide")
 
+name = ""
 e_mail = ""
 action_points = ""
 extra_info = ""
