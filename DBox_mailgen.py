@@ -164,7 +164,7 @@ def main():
     st.title("Donorsbox Reply Tool")
     
     st.write("Paste the email here for which you want ChatGPT to generate a response.")
-    st.write("**Remove all GDPR sensitive information.**")
+    st.write("Remove highly sensitive information (eg bank account, national number...).")
     e_mail = st.text_area('Paste email', height=150)
 
     if st.button("Click here to translate the original email and extract action points"):
