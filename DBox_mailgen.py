@@ -8,7 +8,7 @@ from langchain.chains import LLMChain
 
 st.set_page_config(layout="wide")
 
-name = ""
+name_input = ""
 e_mail = ""
 action_points = ""
 extra_info = ""
@@ -156,7 +156,7 @@ def main():
 
     selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
 
-    name = st.sidebar.text_area('Enter your full name', height=10)
+    name_input = st.sidebar.text_area('Enter your full name', height=10)
     
     st.title("Donorsbox Reply Tool")
     
@@ -182,7 +182,7 @@ def main():
         st.write("If any, include additional information to be mentioned in the answer and specify any messages to be avoided.")
         extra_info = st.text_area('Add extra info', height=150)
 
-    result_2 = reply_to_email(e_mail, action_points, extra_info, selected_model)
+    result_2 = reply_to_email(e_mail, name_input, action_points, extra_info, selected_model)
     if st.button("Click here to generate an answer"):
         st.write('**Proposed answer to the mail**')
         st.write(result_2['Email_answer'])
