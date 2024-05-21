@@ -20,8 +20,8 @@ def extract_and_translate_email(e_mail, llm_model):
     llm = ChatOpenAI(temperature=0.1, model=llm_model)
       
     template_translate_email = """
-    Translate the email between backticks a) to French if it is written in Dutch and b) to Dutch if it is written in French.
-    If it is written in any other language, translate it c) to both French and Dutch.
+    Translate the email between backticks to French if it is written in Dutch or to Dutch if it is written in French.
+    If it is written in any other language, translate it to both French and Dutch.
     '''
     {e_mail}
     '''
@@ -44,11 +44,13 @@ def extract_and_translate_email(e_mail, llm_model):
     Consider that the mail is sent by a donor to an NGO. The action points to be listed are only those for the NGO to take care of. 
     List the action points in both Dutch and French. 
     
-    The list should have the format as follows:
-    
-    Format example:
+    You will find hereafter an exemple of output for the action points:
+    <<<
+    To do:
     1. Mettre fin au mandat dans les 24 heures / het mandaat stopzetten binnen de 24 uur
     2. Confirmer par mail quand c'est fait / Per mail bevestigen wanneer het is stopgezet
+    >>>
+    Use a similar format when producing the action points.  
     """
     
     prompt_extract_action_points = ChatPromptTemplate.from_template(template_extract_action_points)
