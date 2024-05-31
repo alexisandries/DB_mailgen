@@ -85,25 +85,26 @@ def reply_to_email(e_mail, name, done_action_points, extra_info, temperature, ll
     {e_mail}
     ```
     Mention that the following action points have been addressed if appropriate:
-    ```
+    <<<
     {done_action_points}
-    ```
+    >>>
     Consider the additional information below and use it if adequate:
-    ```
+    <<<
     {extra_info}
-    ```
+    >>>
     Your response should be engaging, constructive, helpful, and respectful. Reflect on the tone and sentiment of the sender's message to determine the most suitable reply. Avoid controversy, ambiguity, or politically oriented responses.
 
     If the sender requested to stop or cancel a regular donation, politely mention the option to become a regular donor again by visiting our website:
     - French: www.medecinsdumonde.be
     - Dutch: www.doktersvandewereld.be
 
-    Conclude with a positive note and/or a thank you. Sign off with the appropriate salutations, your name, and the organization:
-    - French response: Médecins du Monde
-    - Dutch response: Dokters van de Wereld
-
-    Regards,
-    {name}
+    Conclude with a positive note and/or a thank you. 
+    
+    Sign off with the appropriate salutations, your name, and the organization:
+    **Salutations**: whats appropriate as to regard of the prior content
+    **Name**: {name}
+    **Organisation in French response**: <<<Médecins du Monde>>>
+    **Organisation if Dutch response: <<<Dokters van de Wereld>>>
     """
     
     prompt_propose_answer = ChatPromptTemplate.from_template(template_propose_answer)
@@ -122,6 +123,7 @@ def reply_to_email(e_mail, name, done_action_points, extra_info, temperature, ll
     {Email_answer}
     '''
     Render only the translation, without any comment or introduction.
+    Please note that the translation of 'Médecins du Monde' = 'Dokters van de Wereld' and vice versa.
     """
     
     prompt_translate_answer = ChatPromptTemplate.from_template(template_translate_answer)
