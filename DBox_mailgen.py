@@ -92,9 +92,9 @@ def reply_to_email(e_mail, name, done_action_points, extra_info, temperature, ll
     <<<
     {extra_info}
     >>>
-    Your response should be engaging, constructive, helpful, and respectful. Reflect on the tone and sentiment of the sender's message to determine the most suitable reply. Avoid controversy, ambiguity, or politically oriented responses.
+    Your response should be engaging, constructive, helpful, and respectful. Reflect on the sender's message to determine the most suitable reply. Avoid controversy, ambiguity, or politically oriented responses.
 
-    If the sender requested to stop or cancel a regular donation, politely mention the option to become a regular donor again by visiting our website:
+    If the sender requested to stop or cancel a regular donation, politely mention the option to become a (regular) donor again by visiting our website:
     - French: www.medecinsdumonde.be
     - Dutch: www.doktersvandewereld.be
 
@@ -162,8 +162,9 @@ def main():
         st.error('The password you entered is incorrect.')
         st.stop()
 
-    selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
-    set_temperature = st.sidebar.slider('**Select the TEMPERATURE**', min_value=0.1, max_value=0.3, step=0.1) 
+    # selected_model = st.sidebar.radio('**Select your MODEL:**', ['gpt-4o', 'gpt-4-turbo'])
+    selected_model = 'gpt-4o'
+    set_temperature = st.sidebar.slider('**Select the TEMPERATURE**', min_value=0.1, max_value=0.5, step=0.1) 
     
     st.title("Donorsbox Reply Tool")
     
