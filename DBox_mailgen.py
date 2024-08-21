@@ -547,7 +547,7 @@ def main():
 
     # Display translated response
     if st.session_state.translated_original_mail:
-        st.subheader(f"Translated Email ({st.session_state.target_language})")
+        st.write(f"**Translated Email (to {st.session_state.target_language})**")
         st.write(st.session_state.translated_original_mail)
     
     # Actions taken and additional messages
