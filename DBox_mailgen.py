@@ -123,7 +123,7 @@ def draft_initial_response(email_content, actions, additional_messages, donor_in
                      name=name, organization=organization)
 
 
-def refine_response(draft_response, donor_info, language, name, organization):
+def refine_response(draft_response, donor_info, language, name, organization, temperature):
     system_template = f"You are an expert fundraiser specialized in refining email responses in {language}, with a deep understanding of donor psychology and effective communication strategies."
     human_template = """
     Refine the following email draft:
@@ -152,7 +152,7 @@ def refine_response(draft_response, donor_info, language, name, organization):
         HumanMessagePromptTemplate.from_template(human_template)
     ])
     
-    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.5)
+    llm = ChatOpenAI(model_name="gpt-4o", temperature=temperature)
     chain = LLMChain(llm=llm, prompt=chat_prompt)
         
     return chain.run(draft_response=draft_response, donor_info=donor_info, language=language, name=name, organization=organization)
@@ -566,7 +566,8 @@ def main():
     st.subheader("Email Signature")
     name = st.text_input("Your Name:")
     organization = "Dokters van de Wereld" if st.session_state.detected_language == "nl" else "Médecins du Monde"
-
+    set_temperature = st.slider('**Select the TEMPERATURE of the latest AI agent:**', min_value=0.1, max_value=0.5, step=0.1, default=0.6) 
+    
     # Draft initial response
     if st.button("Generate Response"):
         with st.spinner("Generating response..."):
@@ -581,7 +582,7 @@ def main():
             # st.subheader("First draft")
             # st.write(initial_draft)
 
-            refined_response = refine_response(initial_draft, donor_info, st.session_state.detected_language, name, organization)
+            refined_response = refine_response(initial_draft, donor_info, st.session_state.detected_language, name, organization, set_temperature)
              
             st.session_state.generated_response = refined_response
 
