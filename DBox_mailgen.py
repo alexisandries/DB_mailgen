@@ -97,7 +97,7 @@ def draft_initial_response(email_content, actions, additional_messages, donor_in
     
     Guidelines for drafting the response:
     1. Draft a response that is engaging, constructive, helpful, and respectful.
-    2. Draw inspiration from the relevant response parts provided.
+    2. Draw inspiration from the relevant response parts provided but NEVER just literally translate them. Capture the ideas and draft them in {language} as if you would think of them from scratch in {language}.
     3. Utilize the detailed donor information to personalize the response appropriately.
     4. Avoid controversy, ambiguity, or politically oriented responses. 
     5. Maintain a positive tone throughout the email.
@@ -136,9 +136,9 @@ def refine_response(draft_response, donor_info, language, name, organization):
     Guidelines for refinement:
     1. Preserve all content elements and messages conveyed in the original draft. Also, DO NOT ADD extra information.
     2. Adapt the phrasing and structure to maximize positive effects on the reader (donor).
-    3. Enhance the fluidity and authenticity of the language used.
-    4. Optimize the email's impact by improving its overall coherence and persuasiveness.
-    5. Use a warm and friendly tone, balancing approachability with professionalism. Adjust the level of formality based on the donor's history, the nature of their inquiry, and cultural norms in {language}.
+    3. Enhance the fluidity and authenticity of the language used, ensuring the email sounds completely natural and seamless for a native speaker of {language}. 
+    4. Optimize the email's impact by improving its overall coherence and persuasiveness. Eliminate unnecessary repetitions, and ensure the message is concise.
+    5. Ensure the tone remains appropriate for the donor type and situation, while being direct and to-the-point. Balance clarity with empathy to maintain a positive relationship with the donor.
     6. Make sure the signature includes the provided name and organization.
 
     Your task is to refine the form and style of the email while keeping its core content intact. 
