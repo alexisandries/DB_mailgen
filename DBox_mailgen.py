@@ -577,12 +577,12 @@ def main():
             # st.write(relevant_responses)
             
             initial_draft = draft_initial_response(email_content, actions, additional_messages, donor_info, relevant_responses, st.session_state.detected_language, name, organization)
-            
+           
             # st.subheader("First draft")
             # st.write(initial_draft)
 
             refined_response = refine_response(initial_draft, donor_info, st.session_state.detected_language, name, organization)
-
+             
             st.session_state.generated_response = refined_response
 
     # Display generated response
