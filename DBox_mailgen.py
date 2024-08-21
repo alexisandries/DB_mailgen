@@ -178,30 +178,8 @@ def translate_email(email_content, source_language, target_language):
     
     return chain.run(email_content=email_content)
 
-def adapt_email(email_content, feedback, language):
-    system_template = f"You are an AI assistant specialized in adapting email responses in {language} based on user feedback."
-    human_template = """
-    Adapt the following email based on the user feedback:
-    
-    Original Email: {email_content}
-    User Feedback: {feedback}
-    
-    Please modify the email according to the feedback while maintaining its overall tone and purpose.
-    """
-    
-    chat_prompt = ChatPromptTemplate.from_messages([
-        SystemMessagePromptTemplate.from_template(system_template),
-        HumanMessagePromptTemplate.from_template(human_template)
-    ])
-    
-    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.7)
-    chain = LLMChain(llm=llm, prompt=chat_prompt)
-    
-    return chain.run(email_content=email_content, feedback=feedback)
-
-# Example data (same as before)
+# Example data for replies
 examples = """
-
 
 ### EXAMPLES OF DATA CHANGE REQUESTS
 
@@ -214,11 +192,10 @@ Thank you for your invaluable support. Your contributions make a significant dif
 
 Feel free to reach out with any further questions.
 
-In solidarity,
+With solidarity,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [firstname],
@@ -231,7 +208,6 @@ Warm regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [name],
@@ -246,7 +222,6 @@ Kind regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [name],
@@ -276,7 +251,6 @@ Kind regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [firstname],
@@ -287,11 +261,10 @@ Please contact us again if you need further assistance. We are here to help.
 
 Thank you for your support, which enables us to help vulnerable people.
 
-In solidarity,
+With solidarity,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [name],
@@ -317,9 +290,8 @@ If you have any further questions, please let us know.
 
 Take care of yourself and those who are close to you.
 
-In solidarity,
+With solidarity,
 [Your Name]
-
 
 ### EXAMPLES OF DONATION CANCELLATION
 
@@ -340,7 +312,6 @@ We also hope you continue to follow our work through social media or our newslet
 Kind regards,
 
 ---
-
 ***Response***
 
 Dear Ms. [Name],
@@ -360,7 +331,6 @@ Thank you again for your understanding.
 Best regards,
 
 ---
-
 ***Response***
 
 Dear [name],
@@ -375,10 +345,9 @@ We hope you continue to follow our work through social media or our newsletter.
 
 Wishing you a pleasant day.
 
-In solidarity,
+With solidarity,
 
 ---
-
 ***Response***
 
 Dear [name],
@@ -389,13 +358,12 @@ We have canceled your direct debit. There will be no more automatic payments.
 
 Thank you for your past support  It has been crucial in helping the most vulnerable. [ONLY IF DONOR INFORMATION SAYS PREVIOUS GIFTS HAVE BEEN MADE]
 
-Take care of yourself and others.
+Take care and have a nice day.
 
-In solidarity,
+Warm regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [name],
@@ -412,7 +380,6 @@ Kind regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [firstname],
@@ -429,7 +396,6 @@ Kind regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [name],
@@ -444,11 +410,10 @@ If you have any further questions, please contact us. We are happy to assist you
 
 Have a nice day.
 
-Kind regards,
+Best regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [Name],
@@ -464,7 +429,6 @@ Have a nice day.
 Kind regards,
 [Your Name]
 
-
 ### EXAMPLES OF UNSUBSCRIBING FROM COMMUNICATION
 
 ***Response***
@@ -479,11 +443,10 @@ We have updated our system to stop sending you emails about our actions or donat
 
 If you have any further questions, please contact us. We are here to ensure our cooperation meets your expectations.
 
-In solidarity,
+Best regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear [firstname],
@@ -496,7 +459,6 @@ Warm regards,
 [Your Name]
 
 ---
-
 ***Response***
 
 Dear Klaas,
@@ -516,13 +478,13 @@ def main():
 
     PASSWORD = st.secrets["MDM_PASSWORD"]
         
-    pass_word = st.text_input('**Enter the password:**')
+    pass_word = st.sidebar.text_input('**Enter the password:**')
     if not pass_word:
         st.stop()
     if pass_word != PASSWORD:
         st.error('The password you entered is incorrect.')
         st.stop()
-    
+    st.sidebar.write("*IMPORTANT! Please contact me (Alexis :-)) if the responses do not meet your expectations. I can easily address this by providing the program with sample responses tailored to your specific needs.*")  
     st.title("Multiagent AI Email System")
 
     # Initialize session state
@@ -624,6 +586,7 @@ def main():
     if st.session_state.generated_response:
         st.subheader("AI Generated Email Response")
         st.text_area("Final Response", value=st.session_state.generated_response, height=500)
+        st.write("*If the response doesn't suit you, rerun the tool. In 20% of use cases, AI can lose track and perform below expectations. Or consider adapting your inputs in the text areas.*")
         
         # Translation option
         if st.button("Translate the translated email"):
