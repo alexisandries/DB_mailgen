@@ -138,9 +138,8 @@ def refine_response(draft_response, donor_info, language, name, organization):
     2. Adapt the phrasing and structure to maximize positive effects on the reader (donor).
     3. Enhance the fluidity and authenticity of the language used.
     4. Optimize the email's impact by improving its overall coherence and persuasiveness.
-    5. Ensure the tone remains appropriate for the donor type and situation.
+    5. Use a warm and friendly tone, balancing approachability with professionalism. Adjust the level of formality based on the donor's history, the nature of their inquiry, and cultural norms in {language}.
     6. Make sure the signature includes the provided name and organization.
-    
 
     Your task is to refine the form and style of the email while keeping its core content intact. 
     The goal is to make the email more engaging, impactful, and donor-centric without altering its fundamental message or omitting any important information.
