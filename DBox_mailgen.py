@@ -535,13 +535,12 @@ def main():
     
     # Actions taken and additional messages
     st.subheader("Manage content")
-    
-    col1, col2, col3 = st.columns(3)
+    actions = st.text_area("Specify actions undertaken (eg stop sdd):")
+    st.write("**Optional:**")
+    col1, col2 = st.columns(2)
     with col1:
-        actions = st.text_area("Specify actions undertaken (eg stop sdd):")
-    with col2: 
         additional_messages = st.text_area("Additional messages to include (eg apologize for confusion):")
-    with col3:
+    with colé:
         additional_guidelines = st.text_area("Additional guidelines to follow (eg direct tone):")
 
     # Donor type selection
