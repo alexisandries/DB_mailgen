@@ -536,20 +536,20 @@ def main():
     # Actions taken and additional messages
     st.subheader("Manage content")
     actions = st.text_area("Specify actions undertaken (eg stop sdd):")
-    st.write("**Optional:**")
+    
     col1, col2 = st.columns(2)
     with col1:
-        additional_messages = st.text_area("Additional messages (eg apologize for confusion):")
+        additional_messages = st.text_area("Additional messages (eg apologize for confusion) - optional:")
     with col2:
-        additional_guidelines = st.text_area("Additional guidelines (eg direct tone):")
+        additional_guidelines = st.text_area("Additional guidelines (eg direct tone) - optional:")
 
     # Donor type selection
-    donor_type = st.radio("Select donor type:", 
+    donor_type = st.radio("**Select donor type:**", 
                           ["Newly recruited regular donor before first donation (or selection)",
                            "Newly recruited regular donor with low number of donations (eg 1 to 4)",
                            "Regular donor with track record", 
                            "Non-regular giver", 
-                           "Not a giver"])
+                           "Other"])
 
     # Additional inputs based on donor type
     donor_info = {"type": donor_type}
@@ -563,13 +563,15 @@ def main():
             donor_info["gift_history_info"] = st.text_input("Start date of regular gifts or total number of regular gifts:")
         with col2:
             donor_info["regular_gift_amount"] = st.text_input("Amount of regular gift:")
-    elif donor_type == "Non-regular giver":
+    if donor_type == "Non-regular giver":
         col1, col2 = st.columns(2)
         with col1:
             donor_info["last_gift_date"] = st.text_input("Date of last gift:")
         with col2:
             donor_info["last_gift_amount"] = st.text_input("Amount of last gift:")
-
+    elif donor_type == "Other":
+            donor_info["interlocutor_type"] = st.text_input("Specify:")
+        
     # Signature
     st.subheader("Email Signature")
     name = st.text_input("Your Name:")
