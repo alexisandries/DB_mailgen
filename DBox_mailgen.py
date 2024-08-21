@@ -162,11 +162,11 @@ def refine_response(draft_response, donor_info, language, name, organization, te
 def translate_email(email_content, source_language, target_language):
     system_template = f"You are a professional translator specializing in translating from {source_language} to {target_language}."
     human_template = """
-    Translate the following email:
+    Translate the following text:
     
     {email_content}
     
-    Ensure that the translation maintains the tone and intent of the original message and is perfectly fluent.
+    Ensure that the translation maintains the tone and intent of the original message, accurately reflects its content, and is perfectly fluent.
     """
     
     chat_prompt = ChatPromptTemplate.from_messages([
@@ -508,6 +508,8 @@ def main():
     st.title("Multiagent AI Email System")
 
     # Initialize session state
+    
+    
     if 'generated_response' not in st.session_state:
         st.session_state.generated_response = None
     if 'translated_response' not in st.session_state:
