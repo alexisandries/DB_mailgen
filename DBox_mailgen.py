@@ -486,7 +486,7 @@ def main():
         st.stop()
     st.sidebar.write("")
     st.sidebar.write("**IMPORTANT!**")
-    st.sidebar.write("Please contact me (Alexis 😊) if the responses frequently do not meet your needs. I can easily address this by providing the program with sample responses tailored to your specific use cases.")  
+    st.sidebar.write("Please contact me (Alexis 😊) if the responses frequently do not meet your needs. I may be able to address this by feeding the program with sample responses tailored to your specific use cases.")  
     st.sidebar.write("In general, please provide feedback on any areas or scenarios where the tool seems to fall short.")
     
     st.title("Multiagent AI Email System")
