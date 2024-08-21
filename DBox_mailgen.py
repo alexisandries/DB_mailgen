@@ -536,6 +536,8 @@ def main():
         st.session_state.detected_language = None
     if 'target_language' not in st.session_state:
         st.session_state.target_language = None
+    if 'translated_original_mail' not in st.session_state:
+        st.session_state.translated_original_mail = None
 
     # Input email
     email_content = st.text_area("Paste the incoming email here:")
