@@ -34,12 +34,10 @@ def detect_demands(email_content):
     demands = chain.run(email_content=email_content).strip().split(', ')
     return demands
 
-def select_relevant_responses(demands, examples, email_content, donor_info, actions, additional_messages):
+def select_relevant_responses(demands, examples, email_content, donor_info, actions, additional_messages, additional_guidelines):
     template = """
-    Given the following information, search through the provided examples 
-    and select or suggest the most relevant parts of responses that address these demands. 
-    You can combine parts from different examples if necessary.
-
+    Given the following information, search through the provided examples to get inspiration. 
+    
     Email content:
     {email_content}
 
@@ -55,14 +53,17 @@ def select_relevant_responses(demands, examples, email_content, donor_info, acti
     Additional messages to include:
     {additional_messages}
 
+    Additional guidelines to follow:
+    {additional_guidelines}
+    
     Examples:
     {examples}
 
     Based on the examples, suggest pertinent response parts, focusing on addressing the detected demands 
-    and considering the donor information, actions taken, and additional messages.
+    and considering the donor information, actions taken, additional messages and additional guidelines.
 
     Please format your response as follows:
-    1. List the top 3-5 most relevant response parts in order of importance.
+    1. List the top 3-5 most relevant response parts in order of importance. 
     2. For each part, provide a brief explanation of why it's relevant.
     3. If no exact matches are found in the examples, suggest appropriate response parts based on the given context.
     4. If absolutely no relevant information is found, state this clearly and suggest a general approach for responding.
@@ -79,17 +80,18 @@ def select_relevant_responses(demands, examples, email_content, donor_info, acti
     chain = LLMChain(llm=llm, prompt=prompt)
 
     relevant_responses = chain.run(email_content=email_content, demands=demands, donor_info=donor_info, 
-                                   actions=actions, additional_messages=additional_messages, examples=examples)
+                                   actions=actions, additional_messages=additional_messages, examples=examples, additional_guidelines=additional_guidelines)
     return relevant_responses
 
 
-def draft_initial_response(email_content, actions, additional_messages, donor_info, relevant_responses, language, name, organization):
+def draft_initial_response(email_content, actions, additional_messages, additional_guidelines, donor_info, relevant_responses, language, name, organization):
     template = """
     Based on the following information, draft an engaging and respectful email response in {language}:
     
     Original Email: {email_content}
     Actions Taken: {actions}
     Additional Messages to Include: {additional_messages}
+    Additional Guidelines to Follow: {additional_guidelines}
     Donor Information: {donor_info}
     Relevant Response Parts: {relevant_responses}
     Your Name: {name}
@@ -99,8 +101,8 @@ def draft_initial_response(email_content, actions, additional_messages, donor_in
     1. Draft a response that is engaging, constructive, helpful, and respectful.
     2. Draw inspiration from the relevant response parts provided but NEVER just literally translate them. Capture the ideas and draft them in {language} as if you would think of them from scratch in {language}.
     3. Utilize the detailed donor information to personalize the response appropriately.
-    4. Avoid controversy, ambiguity, or politically oriented responses. 
-    5. Maintain a positive tone throughout the email.
+    4. Follow the additional guidelines.
+    5. Avoid controversy, ambiguity, or politically oriented responses. Maintain a positive tone throughout the email.
     6. Address all the demands detected in the original email.
     7. Include the additional messages as appropriate within the context of the response.
     8. Conclude with a positive note and/or a thank you.
@@ -120,7 +122,7 @@ def draft_initial_response(email_content, actions, additional_messages, donor_in
     
     return chain.run(email_content=email_content, actions=actions, additional_messages=additional_messages,
                      donor_info=donor_info, relevant_responses=relevant_responses, language=language,
-                     name=name, organization=organization)
+                     name=name, organization=organization, additional_guidelines=additional_guidelines)
 
 
 def refine_response(draft_response, donor_info, language, name, organization, temperature):
@@ -138,7 +140,7 @@ def refine_response(draft_response, donor_info, language, name, organization, te
     2. Adapt the phrasing and structure to maximize positive effects on the reader (donor).
     3. Enhance the fluidity and authenticity of the language used, ensuring the email sounds completely natural and seamless for a native speaker of {language}. 
     4. Optimize the email's impact by improving its overall coherence and persuasiveness. Eliminate unnecessary repetitions, and ensure the message is concise.
-    5. Ensure the tone remains appropriate for the donor type and situation, while being direct and to-the-point. Balance clarity with empathy to maintain a positive relationship with the donor.
+    5. Ensure the tone remains appropriate for the donor type and situation, while being direct and to-the-point.
     6. Make sure the signature includes the provided name and organization.
 
     Your task is to refine the form and style of the email while keeping its core content intact. 
@@ -532,8 +534,15 @@ def main():
         st.write(st.session_state.translated_response)
     
     # Actions taken and additional messages
-    actions = st.text_area("Specify actions undertaken in reaction to the email:")
-    additional_messages = st.text_area("Additional messages to include in the response:")
+    st.subheader("Manage content")
+    
+    col1, col2, col3 = st.columns(3)
+        with col1:
+            actions = st.text_area("Specify actions undertaken (eg stop sdd):")
+        with col2: 
+            additional_messages = st.text_area("Additional messages to include (eg apologize for confusion):")
+        with col3:
+            additional_guidelines = st.text_area("Additional guidelines to follow (eg direct tone):")
 
     # Donor type selection
     donor_type = st.radio("Select donor type:", 
@@ -572,12 +581,12 @@ def main():
     if st.button("Generate Response"):
         with st.spinner("Generating response..."):
             # Select relevant responses
-            relevant_responses = select_relevant_responses(demands, examples, email_content, donor_info, actions, additional_messages)
+            relevant_responses = select_relevant_responses(demands, examples, email_content, donor_info, actions, additional_messages, additional_guidelines)
             
             # st.subheader("Relevant Response Parts")
             # st.write(relevant_responses)
             
-            initial_draft = draft_initial_response(email_content, actions, additional_messages, donor_info, relevant_responses, st.session_state.detected_language, name, organization)
+            initial_draft = draft_initial_response(email_content, actions, additional_messages, additional_guidelines, donor_info, relevant_responses, st.session_state.detected_language, name, organization)
            
             # st.subheader("First draft")
             # st.write(initial_draft)
