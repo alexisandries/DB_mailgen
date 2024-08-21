@@ -566,7 +566,7 @@ def main():
     st.subheader("Email Signature")
     name = st.text_input("Your Name:")
     organization = "Dokters van de Wereld" if st.session_state.detected_language == "nl" else "Médecins du Monde"
-    set_temperature = st.slider('**Select the TEMPERATURE of the latest AI agent:**', min_value=0.1, max_value=0.5, step=0.1, default=0.6) 
+    set_temperature = st.slider('**Select the TEMPERATURE of the latest AI agent:**', min_value=0.1, max_value=0.9, step=0.1, value=0.6) 
     
     # Draft initial response
     if st.button("Generate Response"):
