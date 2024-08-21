@@ -537,12 +537,12 @@ def main():
     st.subheader("Manage content")
     
     col1, col2, col3 = st.columns(3)
-        with col1:
-            actions = st.text_area("Specify actions undertaken (eg stop sdd):")
-        with col2: 
-            additional_messages = st.text_area("Additional messages to include (eg apologize for confusion):")
-        with col3:
-            additional_guidelines = st.text_area("Additional guidelines to follow (eg direct tone):")
+    with col1:
+        actions = st.text_area("Specify actions undertaken (eg stop sdd):")
+    with col2: 
+        additional_messages = st.text_area("Additional messages to include (eg apologize for confusion):")
+    with col3:
+        additional_guidelines = st.text_area("Additional guidelines to follow (eg direct tone):")
 
     # Donor type selection
     donor_type = st.radio("Select donor type:", 
