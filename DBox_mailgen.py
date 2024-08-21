@@ -474,12 +474,27 @@ Kind regards,
 [Your Name]
 """
 
+def reset_app():
+    # Clear all session state variables
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    
+    st.session_state.generated_response = None
+    st.session_state.translated_response = None
+    st.session_state.adapted_response = None
+    st.session_state.detected_language = None
+    st.session_state.target_language = None
+    st.session_state.translated_original_mail = None
+
 # Streamlit app
 def main():
 
     PASSWORD = st.secrets["MDM_PASSWORD"]
         
     pass_word = st.sidebar.text_input('**Enter the password:**')
+    if st.sidebar.button("Reset App"):
+        reset_app()
+        st.experimental_rerun()
     if not pass_word:
         st.stop()
     if pass_word != PASSWORD:
