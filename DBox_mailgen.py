@@ -539,9 +539,9 @@ def main():
     st.write("**Optional:**")
     col1, col2 = st.columns(2)
     with col1:
-        additional_messages = st.text_area("Additional messages to include (eg apologize for confusion):")
-    with colé:
-        additional_guidelines = st.text_area("Additional guidelines to follow (eg direct tone):")
+        additional_messages = st.text_area("Additional messages (eg apologize for confusion):")
+    with col2:
+        additional_guidelines = st.text_area("Additional guidelines (eg direct tone):")
 
     # Donor type selection
     donor_type = st.radio("Select donor type:", 
