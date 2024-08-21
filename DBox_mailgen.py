@@ -155,7 +155,7 @@ def refine_response(draft_response, donor_info, language, name, organization):
     llm = ChatOpenAI(model_name="gpt-4o", temperature=0.5)
     chain = LLMChain(llm=llm, prompt=chat_prompt)
         
-    return chain.run(draft_response=draft_response, donor_info=donor_info, name=name, organization=organization)
+    return chain.run(draft_response=draft_response, donor_info=donor_info, language=language, name=name, organization=organization)
 
 def translate_email(email_content, source_language, target_language):
     system_template = f"You are a professional translator specializing in translating from {source_language} to {target_language}."
@@ -592,7 +592,7 @@ def main():
         st.write("*If the response doesn't suit you, rerun the tool. In 20% of use cases, AI can lose track and perform below expectations. Or consider adapting your inputs in the text areas.*")
         
         # Translation option
-        if st.button("Translate the translated email"):
+        if st.button("Translate the generated email"):
             st.session_state.translated_response = translate_email(st.session_state.generated_response, st.session_state.detected_language, st.session_state.target_language)
 
         # Display translated response
