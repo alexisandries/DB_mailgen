@@ -104,7 +104,7 @@ def draft_initial_response(email_content, actions, additional_messages, donor_in
     6. Address all the demands detected in the original email.
     7. Include the additional messages as appropriate within the context of the response.
     8. Conclude with a positive note and/or a thank you.
-    9. Use appropriate salutations and sign-off for the email.
+    9. Use appropriate salutations and sign-off for the email, that are known and commonly used in {language}.
     10. Include the provided name and organization in the signature.
     
     Complete response:
