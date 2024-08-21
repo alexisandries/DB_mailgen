@@ -485,8 +485,9 @@ def main():
         st.error('The password you entered is incorrect.')
         st.stop()
     st.sidebar.write("")
-    st.sidebar.write("**IMPORTANT!**)
+    st.sidebar.write("**IMPORTANT!**")
     st.sidebar.write("Please contact me (Alexis 😊) if the responses frequently do not meet your needs. I can easily address this by providing the program with sample responses tailored to your specific use cases.")  
+    
     st.title("Multiagent AI Email System")
 
     # Initialize session state
