@@ -503,7 +503,7 @@ def main():
     st.sidebar.write("")
     st.sidebar.write("**IMPORTANT!**")
     st.sidebar.write("Please contact me (Alexis 😊) if the responses frequently do not meet your needs. I may be able to address this by feeding the program with sample responses tailored to your specific use cases.")  
-    st.sidebar.write("In general, please provide feedback on any areas or scenarios where the tool seems to fall short.")
+    st.sidebar.write("In general, please provide feedback on any areas or scenarios where the tool seems to fall short or could be improved.")
     
     st.title("Multiagent AI Email System")
 
@@ -593,7 +593,7 @@ def main():
     st.subheader("Email Signature")
     name = st.text_input("Your Name:")
     organization = "Dokters van de Wereld" if st.session_state.detected_language == "nl" else "Médecins du Monde"
-    set_temperature = st.slider('**Select the TEMPERATURE of the latest AI agent:**', min_value=0.1, max_value=0.9, step=0.1, value=0.6) 
+    set_temperature = st.slider('**Select the TEMPERATURE of the latest AI agent:**', min_value=0.1, max_value=0.9, step=0.1, value=0.3) 
     
     # Draft initial response
     if st.button("Generate Response"):
@@ -617,7 +617,7 @@ def main():
     if st.session_state.generated_response:
         st.subheader("AI Generated Email Response")
         st.text_area("Final Response", value=st.session_state.generated_response, height=500)
-        st.write("*If the response doesn't suit you, rerun the tool. In 20% of use cases, AI can lose track and perform below expectations. Or consider adapting your inputs in the text areas.*")
+        st.write("**If the response doesn't meet your expectations, please rerun the tool. In about 20% of cases, AI performance might fall short or become inconsistent. Consider adjusting your inputs in the text areas before rerunning. Requesting a direct tone in the guidelines can be particularly effective, especially in Dutch.**")
         
         # Translation option
         if st.button("Translate the generated email"):
