@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
-from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate, LLMChain
+from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
 from datetime import datetime
 from langdetect import detect
 import openai
