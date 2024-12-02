@@ -28,7 +28,7 @@ def detect_demands(email_content):
         HumanMessagePromptTemplate.from_template(human_template)
     ])
 
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.3)
+    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.5)
     chain = LLMChain(llm=llm, prompt=chat_prompt)
 
     demands = chain.run(email_content=email_content).strip().split(', ')
