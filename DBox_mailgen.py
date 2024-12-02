@@ -494,7 +494,7 @@ def main():
     pass_word = st.sidebar.text_input('**Enter the password:**')
     if st.sidebar.button("Reset App"):
         reset_app()
-        st.experimental_rerun()
+        st.rerun()
     if not pass_word:
         st.stop()
     if pass_word != PASSWORD:
