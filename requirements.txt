@@ -3,3 +3,4 @@ openai==1.23.3
 langchain==0.1.16
 datetime==5.5
 langdetect==1.0.9
+langchain-openai== 0.2.6
